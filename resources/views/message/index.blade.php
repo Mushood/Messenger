@@ -3,17 +3,6 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    You are logged in!
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         
     </div>
     <div class="row">
@@ -32,7 +21,21 @@
             </a>
         </div>
         <div class="col-lg-9">
-            
+            <h1>Inbox</h1>
+            @if(isset($threads))
+                @foreach($threads as $key => $thread)
+                    <div class="row">
+                        <h3>{{$thread -> subject}}</h3>
+                        @foreach($thread -> messages() as $key => $message)
+                            <h5>Written by: {{$message->user()->name}}</h5>
+                            <p>{{$message -> body}}</p>
+                        @endforeach
+                        <hr />
+                    </div>
+                @endforeach
+            @else
+                <h2>No message in inbox</h2>
+            @endif
         </div>
     </div>
 </div>
