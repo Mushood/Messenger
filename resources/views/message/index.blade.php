@@ -27,9 +27,12 @@
                     <div class="row">
                         <h3>{{$thread -> subject}}</h3>
                         @foreach($thread -> messages() as $key => $message)
-                            <h5>Written by: {{$message->user()->name}}</h5>
+                            <h4>Written by: {{$message->user()->name}}</h4>
                             <p>{{$message -> body}}</p>
                         @endforeach
+                        <a href="/replymessage/{{$thread -> id}}">
+                            <button class="btn btn-primary">Reply</button>
+                        </a>
                         <hr />
                     </div>
                 @endforeach
