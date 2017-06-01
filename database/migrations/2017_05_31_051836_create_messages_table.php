@@ -17,7 +17,9 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
             $table->text('body');
             $table->integer('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('thread_id');
+            $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
             $table->timestamps();
         });
     }
