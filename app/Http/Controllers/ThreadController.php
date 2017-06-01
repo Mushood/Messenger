@@ -6,11 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Message;
 use App\Thread;
+use App\User;
+use App\Participant;
 
 class ThreadController extends Controller
 {
     public function index(){
-        $threads = Thread::all();
+        $user = Auth::user();
+        $participatingThreads = Participant::where('user_id',$user->id)->groupBy('id')->get();
+        echo $participatingThreads;
+        $threadsID = array();
+        foreach($participatingThreads as $participatingThread){
+            array_push($threadsID, $participatingThread->thread_id);
+        }
+        $threads = Thread::find($threadsID);
+        
         /* FOR TESTING
         foreach ($threads as $thread){
             echo $thread->subject;
@@ -31,6 +41,7 @@ class ThreadController extends Controller
     public function store(){
         $subject = request('subject');
         $body = request('body');
+        $to = request('to');
         $user = Auth::user();
         
         //create new thread
@@ -44,6 +55,21 @@ class ThreadController extends Controller
         $message->user_id = $user->id;
         $message->thread_id = $thread->id; 
         $message->save();
+        
+        $participant = new Participant;
+        $participant->user_id = $user->id;
+        $participant->thread_id = $thread->id;
+        $participant->save();
+        
+        $recipients = explode(",", $to);
+        foreach($recipients as $recipient){
+            $userR = User::where('email',$recipient)->first();
+            $participant = new Participant;
+            $participant->user_id = $userR->id;
+            $participant->thread_id = $thread->id;
+            $participant->save();
+        }
+         
         
         return redirect('/inbox');
     }

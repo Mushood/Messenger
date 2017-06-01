@@ -23,23 +23,13 @@
         <div class="col-lg-9">
             <h1>New Message</h1>
             <div class="container">
-                {!! Form::open(['url' => '/newmessage']) !!}
-                
-                <div class="form-group">
-                {!! Form::label('to', 'To'); !!}
-                {!! Form::text('to'); !!}
-                </div>
-
-                <div class="form-group">
-                {!! Form::label('subject', 'Subject'); !!}
-                {!! Form::text('subject'); !!}
-                </div>
+                {!! Form::open(['url' => '/replymessage']) !!}
 
                 <div class="form-group">
                 {!! Form::label('body', 'Body'); !!}
                 {!! Form::textarea('body'); !!}
                 </div>
-                
+                <input type="hidden" name="threadID" value="{{$threadID}}">
                 {!! Form::submit('Send Message'); !!}
                 {!! Form::close() !!}
             </div>
