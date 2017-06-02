@@ -13,25 +13,25 @@
             <h1>Deleted Messages</h1>
             @if(isset($threads))
                 @foreach($threads as $key => $thread)
+                  @if($thread->isOwnerDeleted($thread->id))
                     <div class="row">
                         <h3>{{$thread -> subject}}</h3>
                         @foreach($thread -> messages() as $key => $message)
                             <h4>Written by: {{$message->user()->name}}</h4>
                             <p>{{$message -> body}}</p>
                         @endforeach
-                        <a href="/replymessage/{{$thread -> id}}">
-                            <button class="btn btn-primary">Reply</button>
-                        </a>
-                        {!! Form::open(['url' => '/restoremessage']) !!}
+                        
+                            {!! Form::open(['url' => '/restoremessage']) !!}
 
-                        <div class="form-group">
-                          <input type="hidden" name="thread" value="{{$thread -> id}}" />
-                        </div>
+                            <div class="form-group">
+                              <input type="hidden" name="thread" value="{{$thread -> id}}" />
+                            </div>
 
-                        {!! Form::submit('Restore'); !!}
-                        {!! Form::close() !!}
-                        <hr />
+                            {!! Form::submit('Restore'); !!}
+                            {!! Form::close() !!}
+                        <hr />  
                     </div>
+                  @endif
                 @endforeach
             @else
                 <h2>No message in inbox</h2>

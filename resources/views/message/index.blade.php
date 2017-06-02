@@ -22,14 +22,16 @@
                         <a href="/replymessage/{{$thread -> id}}">
                             <button class="btn btn-primary">Reply</button>
                         </a>
-                        {!! Form::open(['url' => '/deletemessage']) !!}
+                        @if($thread->isOwner($thread->id))
+                            {!! Form::open(['url' => '/deletemessage']) !!}
+                        
+                            <div class="form-group">
+                              <input type="hidden" name="thread" value="{{$thread -> id}}" />
+                            </div>
 
-                        <div class="form-group">
-                          <input type="hidden" name="thread" value="{{$thread -> id}}" />
-                        </div>
-
-                        {!! Form::submit('Delete'); !!}
-                        {!! Form::close() !!}
+                            {!! Form::submit('Delete'); !!}
+                            {!! Form::close() !!}
+                        @endif
                         <hr />
                     </div>
                 @endforeach
