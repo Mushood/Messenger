@@ -27,7 +27,11 @@
 
                 <div class="form-group">
                 {!! Form::label('body', 'Body'); !!}
-                {!! Form::textarea('body' ,$body); !!}
+                @if(isset($body))
+                    {!! Form::textarea('body' ,$body); !!}
+                @else
+                    {!! Form::textarea('body'); !!}
+                @endif
                 </div>
 
                 {!! Form::submit('Send Message'); !!}
