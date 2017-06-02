@@ -13,15 +13,16 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->text('body');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('thread_id')->unsigned();
-            $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
-            $table->timestamps();
-        });
+      Schema::create('messages', function (Blueprint $table) {
+        $table->increments('id');
+        $table->text('body');
+        $table->integer('user_id')->unsigned();
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->integer('thread_id')->unsigned();
+        $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
+        $table->timestamps();
+        $table->softDeletes();
+      });
     }
 
     /**

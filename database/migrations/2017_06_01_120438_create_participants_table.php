@@ -13,14 +13,15 @@ class CreateParticipantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('participants', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('thread_id')->unsigned();
-            $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
-            $table->timestamps();
-        });
+      Schema::create('participants', function (Blueprint $table) {
+        $table->increments('id');
+        $table->integer('user_id')->unsigned();
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->integer('thread_id')->unsigned();
+        $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade');
+        $table->timestamps();
+        $table->softDeletes();
+      });
     }
 
     /**
@@ -30,6 +31,6 @@ class CreateParticipantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('participants');
+      Schema::dropIfExists('participants');
     }
 }
