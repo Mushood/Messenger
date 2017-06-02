@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/inbox', 'ThreadController@index');
+Route::get('/sent', 'ThreadController@sent');
 
 Route::get('/newmessage', 'ThreadController@create');
 Route::post('/newmessage', 'ThreadController@store');

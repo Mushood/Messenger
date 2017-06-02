@@ -116,17 +116,6 @@ class ThreadController extends Controller
             array_push($threadsID, $participatingThread->thread_id);
         }
         $threads = Thread::onlyTrashed()->find($threadsID);
-
-        /* FOR TESTING
-        foreach ($threads as $thread){
-            echo $thread->subject;
-            //var_dump($thread->messages());
-            foreach($thread->messages() as $message){
-                echo $message->body;
-            }
-        }
-        die();
-         * */
         return view('message.indexdeleted',compact('threads'));
     }
     
@@ -147,4 +136,22 @@ class ThreadController extends Controller
       $thread->restore();
       return redirect('/deletedmessages');
     }
+    
+    public function sent(){
+        $threadAlls = Thread::all();
+        $user = Auth::user();
+        $threadsID = array();
+        foreach($threadAlls as $threadAll){
+            $message = Message::where('thread_id',$threadAll->id)->first();
+            if($user->id == $message->user_id){
+                array_push($threadsID, $message->thread_id);
+            } else {
+                //do nothing
+            }
+        }
+        $threads = Thread::find($threadsID);
+        return view('message.sent',compact('threads'));
+    }
 }
+
+            
