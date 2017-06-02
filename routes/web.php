@@ -28,3 +28,6 @@ Route::get('/replymessage/{id}', 'MessageController@create');
 Route::post('/replymessage', 'MessageController@store');
 
 Route::post('/deletemessage', 'ThreadController@delete');
+Route::post('/restoremessage', 'ThreadController@restore');
+
+Route::get('/deletedmessages', 'ThreadController@deleteIndex');

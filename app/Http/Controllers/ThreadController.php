@@ -106,4 +106,45 @@ class ThreadController extends Controller
       $thread->delete();
       return redirect('/inbox');
     }
+    
+    public function deleteIndex(){
+        $user = Auth::user();
+        $participatingThreads = Participant::onlyTrashed()->where('user_id',$user->id)->groupBy('id')->get();
+        //echo $participatingThreads;
+        $threadsID = array();
+        foreach($participatingThreads as $participatingThread){
+            array_push($threadsID, $participatingThread->thread_id);
+        }
+        $threads = Thread::onlyTrashed()->find($threadsID);
+
+        /* FOR TESTING
+        foreach ($threads as $thread){
+            echo $thread->subject;
+            //var_dump($thread->messages());
+            foreach($thread->messages() as $message){
+                echo $message->body;
+            }
+        }
+        die();
+         * */
+        return view('message.indexdeleted',compact('threads'));
+    }
+    
+    public function restore(){
+      $threadID = request('thread');
+
+      $messages = Message::onlyTrashed()->where('thread_id',$threadID)->get();
+      foreach ($messages as $key => $message) {
+        $message->restore();
+      }
+
+      $participants = Participant::onlyTrashed()->where('thread_id',$threadID)->get();
+      foreach ($participants as $key => $participant) {
+        $participant->restore();
+      }
+
+      $thread = Thread::onlyTrashed()->find($threadID);
+      $thread->restore();
+      return redirect('/deletedmessages');
+    }
 }
