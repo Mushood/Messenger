@@ -3,22 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row">
-        
+
     </div>
     <div class="row">
         <div class="col-lg-3">
-            <a href="/newmessage">
-                <button class="btn btn-warning btn-block">New Message</button>
-            </a>
-            <a href="/inbox">
-                <button class="btn btn-warning btn-block">Inbox</button>
-            </a>
-            <a href="/sent">
-                <button class="btn btn-warning btn-block">Sent</button>
-            </a>
-            <a href="/deletedmessages">
-                <button class="btn btn-warning btn-block">Delete</button>
-            </a>
+            @include('layouts.sidebar')
         </div>
         <div class="col-lg-9">
             <h1>Inbox</h1>
@@ -33,6 +22,14 @@
                         <a href="/replymessage/{{$thread -> id}}">
                             <button class="btn btn-primary">Reply</button>
                         </a>
+                        {!! Form::open(['url' => '/deletemessage']) !!}
+
+                        <div class="form-group">
+                          <input type="hidden" name="thread" value="{{$thread -> id}}" />
+                        </div>
+
+                        {!! Form::submit('Delete'); !!}
+                        {!! Form::close() !!}
                         <hr />
                     </div>
                 @endforeach

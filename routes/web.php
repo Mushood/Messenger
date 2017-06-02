@@ -26,3 +26,5 @@ Route::post('/newmessage', 'ThreadController@store');
 
 Route::get('/replymessage/{id}', 'MessageController@create');
 Route::post('/replymessage', 'MessageController@store');
+
+Route::post('/deletemessage', 'ThreadController@delete');
