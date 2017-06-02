@@ -24,6 +24,7 @@ Route::get('/sent', 'ThreadController@sent');
 
 Route::get('/newmessage', 'ThreadController@create');
 Route::post('/newmessage', 'ThreadController@store');
+Route::post('/forwardmessage', 'ThreadController@forward');
 
 Route::get('/replymessage/{id}', 'MessageController@create');
 Route::post('/replymessage', 'MessageController@store');

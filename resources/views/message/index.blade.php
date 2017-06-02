@@ -17,18 +17,23 @@
                         <h3>{{$thread -> subject}}</h3>
                         @foreach($thread -> messages() as $key => $message)
                             <h4>Written by: {{$message->user()->name}}</h4>
-                            <p>{{$message -> body}}</p>
+                            <p>{!!$message -> body!!}</p>
                         @endforeach
                         <a href="/replymessage/{{$thread -> id}}">
                             <button class="btn btn-primary">Reply</button>
                         </a>
-                        @if($thread->isOwner($thread->id))
-                            {!! Form::open(['url' => '/deletemessage']) !!}
+                        {!! Form::open(['url' => '/forwardmessage']) !!}                        
+                        <div class="form-group">
+                          <input type="hidden" name="thread" value="{{$thread -> id}}" />
+                        </div>
+                        {!! Form::submit('Forward'); !!}
+                        {!! Form::close() !!}
                         
+                        @if($thread->isOwner($thread->id))
+                            {!! Form::open(['url' => '/deletemessage']) !!}                        
                             <div class="form-group">
                               <input type="hidden" name="thread" value="{{$thread -> id}}" />
                             </div>
-
                             {!! Form::submit('Delete'); !!}
                             {!! Form::close() !!}
                         @endif

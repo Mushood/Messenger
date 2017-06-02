@@ -152,6 +152,18 @@ class ThreadController extends Controller
         $threads = Thread::find($threadsID);
         return view('message.sent',compact('threads'));
     }
+    
+    public function forward(){
+        $threadID = request('thread');
+        $thread = Thread::find($threadID);
+        
+        $body = "";
+        foreach($thread->messages() as $message){
+            $body = $body . "Written by: " .$message->user()->name . " <br />";
+            $body = $body . $message->body . " <br />";
+        }
+        return view('message.create')->with('body', $body);
+    }
 }
 
             
