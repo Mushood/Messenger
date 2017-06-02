@@ -8,6 +8,7 @@ use App\Message;
 use App\Thread;
 use App\User;
 use App\Participant;
+use Illuminate\Support\Facades\DB;
 
 class ThreadController extends Controller
 {
@@ -45,38 +46,41 @@ class ThreadController extends Controller
       $errors = "";
       $successful = "";
       $user = Auth::user();
+      
+      DB::transaction(function () use ($body, &$errors, &$successful, $user, $to,$subject) {
 
-      //create new thread
-      $thread = new Thread();
-      $thread->subject = $subject;
-      $thread->save();
+        //create new thread
+        $thread = new Thread();
+        $thread->subject = $subject;
+        $thread->save();
 
-      //create new message
-      $message = new Message();
-      $message->body = $body;
-      $message->user_id = $user->id;
-      $message->thread_id = $thread->id;
-      $message->save();
+        //create new message
+        $message = new Message();
+        $message->body = $body;
+        $message->user_id = $user->id;
+        $message->thread_id = $thread->id;
+        $message->save();
 
-      $participant = new Participant;
-      $participant->user_id = $user->id;
-      $participant->thread_id = $thread->id;
-      $participant->save();
+        $participant = new Participant;
+        $participant->user_id = $user->id;
+        $participant->thread_id = $thread->id;
+        $participant->save();
 
-      $recipients = explode(",", $to);
-      foreach($recipients as $recipient){
-          $userR = User::where('email',$recipient)->first();
-          if(isset($userR)){
-            $participant = new Participant;
-            $participant->user_id = $userR->id;
-            $participant->thread_id = $thread->id;
-            $participant->save();
-            $successful = $successful . "Email was successfully sent to: ". $recipient . "<br />";
-          } else {
-            $errors = $errors . "This is not a valid email: " . $recipient . "<br />";
-          }
-      }
-
+        $recipients = explode(",", $to);
+        
+        foreach($recipients as $recipient){
+            $userR = User::where('email',$recipient)->first();
+            if(isset($userR)){
+              $participant = new Participant;
+              $participant->user_id = $userR->id;
+              $participant->thread_id = $thread->id;
+              $participant->save();
+              $successful = $successful . "Email was successfully sent to: ". $recipient . "<br />";
+            } else {
+              $errors = $errors . "This is not a valid email: " . $recipient . "<br />";
+            }
+        }
+      });
       if(empty($errors)){
         return redirect('/inbox');
       } else {
