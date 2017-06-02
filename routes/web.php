@@ -20,11 +20,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/inbox', 'ThreadController@index');
+Route::get('/sent', 'ThreadController@sent');
 
 Route::get('/newmessage', 'ThreadController@create');
 Route::post('/newmessage', 'ThreadController@store');
+Route::post('/forwardmessage', 'ThreadController@forward');
 
 Route::get('/replymessage/{id}', 'MessageController@create');
 Route::post('/replymessage', 'MessageController@store');
 
 Route::post('/deletemessage', 'ThreadController@delete');
+Route::post('/restoremessage', 'ThreadController@restore');
+
+Route::get('/deletedmessages', 'ThreadController@deleteIndex');

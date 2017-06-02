@@ -10,30 +10,25 @@
             @include('layouts.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1>Inbox</h1>
+            <h1>Sent Mail</h1>
             @if(isset($threads))
                 @foreach($threads as $key => $thread)
                     <div class="row">
                         <h3>{{$thread -> subject}}</h3>
                         @foreach($thread -> messages() as $key => $message)
                             <h4>Written by: {{$message->user()->name}}</h4>
-                            <p>{!!$message -> body!!}</p>
+                            <p>{{$message -> body}}</p>
                         @endforeach
                         <a href="/replymessage/{{$thread -> id}}">
                             <button class="btn btn-primary">Reply</button>
                         </a>
-                        {!! Form::open(['url' => '/forwardmessage']) !!}                        
-                        <div class="form-group">
-                          <input type="hidden" name="thread" value="{{$thread -> id}}" />
-                        </div>
-                        {!! Form::submit('Forward'); !!}
-                        {!! Form::close() !!}
-                        
                         @if($thread->isOwner($thread->id))
-                            {!! Form::open(['url' => '/deletemessage']) !!}                        
+                            {!! Form::open(['url' => '/deletemessage']) !!}
+                        
                             <div class="form-group">
                               <input type="hidden" name="thread" value="{{$thread -> id}}" />
                             </div>
+
                             {!! Form::submit('Delete'); !!}
                             {!! Form::close() !!}
                         @endif

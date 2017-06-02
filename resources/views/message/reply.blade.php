@@ -10,10 +10,14 @@
             @include('layouts.sidebar')
         </div>
         <div class="col-lg-9">
-            <h1>New Message</h1>
+            <h1>Reply to Message</h1>
+            @include('layouts.errors')
             <div class="container">
                 {!! Form::open(['url' => '/replymessage']) !!}
-
+                <div class="form-group">
+                {!! Form::label('to', 'To'); !!}
+                {!! Form::text('to'); !!}
+                </div>
                 <div class="form-group">
                 {!! Form::label('body', 'Body'); !!}
                 {!! Form::textarea('body'); !!}

@@ -8,5 +8,5 @@
     <button class="btn btn-warning btn-block">Sent</button>
 </a>
 <a href="/deletedmessages">
-    <button class="btn btn-warning btn-block">Delete</button>
+    <button class="btn btn-warning btn-block">Deleted</button>
 </a>
